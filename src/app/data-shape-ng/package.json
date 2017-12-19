@@ -1,0 +1,11 @@
+{
+  "name": "data-shape-ng",
+  "version": "1.0.1",
+  "description": "data definition and fixtures",
+  "main": "index.ts",
+  "author": "jianglibo@gmail.com",
+  "license": "MIT",
+  "dependencies": {
+    "rxjs": "^5.5.2"
+  }
+}
