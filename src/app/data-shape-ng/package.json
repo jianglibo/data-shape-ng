@@ -1,6 +1,6 @@
 {
   "name": "data-shape-ng",
-  "version": "1.0.2",
+  "version": "1.0.3",
   "description": "data definition and fixtures",
   "main": "index.ts",
   "author": "jianglibo@gmail.com",
