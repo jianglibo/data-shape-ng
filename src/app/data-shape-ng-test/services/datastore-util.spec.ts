@@ -7,11 +7,48 @@ describe('DatastoreUtilService', () => {
     expect(url).toBe('/jsonapi/loginAttempts');
   });
 
+  it('should get right url when no parameters.', () => {
+    const url = DatastoreUtil.getListUrl(LoginAttempt, '/jsonapi/');
+    expect(url).toBe('/jsonapi/loginAttempts');
+  });
+
+  it('should get right url when has empty sort parameters.', () => {
+    const url = DatastoreUtil.getListUrl(
+      LoginAttempt,
+      '/jsonapi/',
+      undefined,
+      []
+    );
+    expect(url).toBe('/jsonapi/loginAttempts');
+  });
+
+  it('should get right url when has one sort parameters.', () => {
+    const url = DatastoreUtil.getListUrl(LoginAttempt, '/jsonapi/', undefined, {
+      fname: 'a',
+      direction: 'desc'
+    });
+    expect(url).toBe('/jsonapi/loginAttempts?sort=-a');
+  });
+
+  it('should get right url when has multiple sort parameters.', () => {
+    const url = DatastoreUtil.getListUrl(LoginAttempt, '/jsonapi/', undefined, [
+      { fname: 'a', direction: 'desc' },
+      { fname: 'b', direction: 'asc' }
+    ]);
+    expect(url).toBe('/jsonapi/loginAttempts?sort=-a,b');
+  });
+
   it('should get right url with page.', () => {
-    let url = DatastoreUtil.getListUrl(LoginAttempt, '/jsonapi/', { offset: 0, limit: 20 });
+    let url = DatastoreUtil.getListUrl(LoginAttempt, '/jsonapi/', {
+      offset: 0,
+      limit: 20
+    });
     expect(url).toBe('/jsonapi/loginAttempts?page[offset]=0&page[limit]=20');
 
-    url = DatastoreUtil.getListUrl(LoginAttempt, '/jsonapi/', { number: 0, size: 20 });
+    url = DatastoreUtil.getListUrl(LoginAttempt, '/jsonapi/', {
+      number: 0,
+      size: 20
+    });
     expect(url).toBe('/jsonapi/loginAttempts?page[number]=0&page[size]=20');
 
     url = DatastoreUtil.getListUrl(LoginAttempt, '/jsonapi/', { cursor: 555 });
@@ -21,24 +58,40 @@ describe('DatastoreUtilService', () => {
       LoginAttempt,
       '/jsonapi/',
       undefined,
-      [{ fname: 'username', direction: 'desc' }, { fname: 'password', direction: 'asc' }],
+      [
+        { fname: 'username', direction: 'desc' },
+        { fname: 'password', direction: 'asc' }
+      ],
       [{ fname: 'username', value: 'a' }]
     );
-    expect(url).toBe('/jsonapi/loginAttempts?sort=-username,password&filter[username]=a');
+    expect(url).toBe(
+      '/jsonapi/loginAttempts?sort=-username,password&filter[username]=a'
+    );
 
     url = DatastoreUtil.getListUrl(
       LoginAttempt,
       '/jsonapi/',
       undefined,
-      [{ fname: 'username', direction: 'desc' }, { fname: 'password', direction: 'asc' }],
+      [
+        { fname: 'username', direction: 'desc' },
+        { fname: 'password', direction: 'asc' }
+      ],
       { fname: 'username', value: 'a' }
     );
-    expect(url).toBe('/jsonapi/loginAttempts?sort=-username,password&filter[username]=a');
+    expect(url).toBe(
+      '/jsonapi/loginAttempts?sort=-username,password&filter[username]=a'
+    );
 
-    url = DatastoreUtil.getListUrl(LoginAttempt, '/jsonapi/', undefined, { fname: 'username', direction: 'desc' }, [
-      { fname: 'username', value: 'a' },
-    ]);
-    expect(url).toBe('/jsonapi/loginAttempts?sort=-username&filter[username]=a');
+    url = DatastoreUtil.getListUrl(
+      LoginAttempt,
+      '/jsonapi/',
+      undefined,
+      { fname: 'username', direction: 'desc' },
+      [{ fname: 'username', value: 'a' }]
+    );
+    expect(url).toBe(
+      '/jsonapi/loginAttempts?sort=-username&filter[username]=a'
+    );
 
     url = DatastoreUtil.getListUrl(
       LoginAttempt,
@@ -47,7 +100,9 @@ describe('DatastoreUtilService', () => {
       { fname: 'username', direction: 'desc' },
       { fname: 'username', value: 'a' }
     );
-    expect(url).toBe('/jsonapi/loginAttempts?sort=-username&filter[username]=a');
+    expect(url).toBe(
+      '/jsonapi/loginAttempts?sort=-username&filter[username]=a'
+    );
   });
 
   it('should get right single url.', () => {

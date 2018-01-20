@@ -123,14 +123,22 @@ export class DatastoreUtil {
 
     if (sort) {
       let sortstr = getSortParams(sort);
-      sortstr = 'sort=' + sortstr;
-      tobeappend = tobeappend ? tobeappend + '&' + sortstr : sortstr;
+      if (sortstr) {
+        sortstr = 'sort=' + sortstr;
+        tobeappend = tobeappend ? tobeappend + '&' + sortstr : sortstr;
+      }
     }
     if (filter) {
       const filterstr = getFilterParams(filter);
-      tobeappend = tobeappend ? tobeappend + '&' + filterstr : filterstr;
+      if (filterstr) {
+        tobeappend = tobeappend ? tobeappend + '&' + filterstr : filterstr;
+      }
     }
     result = tobeappend ? result + '?' + tobeappend : result;
+
+    if (result && result.endsWith('&')) {
+      result = result.substring(0, result.length - 1);
+    }
 
     return result;
   }
