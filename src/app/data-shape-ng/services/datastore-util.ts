@@ -63,7 +63,11 @@ function getFilterParams(filter: FilterPhrase | FilterPhrase[]): string {
     }
     filterstr = filter
       .map((v, i, a) => {
-        return `filter[${v.fname}]=${v.value}`;
+        if (v.value) {
+          return `filter[${v.fname}]=${v.value}`;
+        } else {
+          return '';
+        }
       })
       .join('&');
   }

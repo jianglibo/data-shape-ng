@@ -38,6 +38,22 @@ describe('DatastoreUtilService', () => {
     expect(url).toBe('/jsonapi/loginAttempts?sort=-a,b');
   });
 
+  it('should remove empty filter parameters.', () => {
+    const url = DatastoreUtil.getListUrl(
+      LoginAttempt,
+      '/jsonapi/',
+      undefined,
+      [
+        { fname: 'username', direction: 'desc' },
+        { fname: 'password', direction: 'asc' }
+      ],
+      [{ fname: 'username', value: '' }]
+    );
+    expect(url).toBe(
+      '/jsonapi/loginAttempts?sort=-username,password'
+    );
+  });
+
   it('should get right url with page.', () => {
     let url = DatastoreUtil.getListUrl(LoginAttempt, '/jsonapi/', {
       offset: 0,
